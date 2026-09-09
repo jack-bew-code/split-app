@@ -1,0 +1,19 @@
+#!/bin/sh
+# prepare-commit-msg hook: bump project version based on commit message and ensure package.json is staged
+# Install by running: git config core.hooksPath .githooks
+
+MSG_FILE="$1"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+node "$REPO_ROOT/scripts/bump-version.js" "$MSG_FILE"
+RET=$?
+if [ $RET -ne 0 ]; then
+  echo "[bump-version] failed (exit $RET). Aborting commit."
+  exit 1
+fi
+
+if ! git diff --quiet -- "$REPO_ROOT/package.json"; then
+  git add "$REPO_ROOT/package.json"
+fi
+
+exit 0
