@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import pkg from "../package.json";
+import { APP_VERSION } from "@/lib/version";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="fixed top-2 right-4 text-xs font-mono text-gray-400 z-50">
-          v{pkg.version}
+          v{APP_VERSION}
         </div>
         {children}
       </body>
