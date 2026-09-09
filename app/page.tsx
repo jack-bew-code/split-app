@@ -9,7 +9,7 @@ export default function Home() {
     <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Split Simple</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Better Splitwise</CardTitle>
           <CardDescription className="text-center">
             Create a group to track expenses with friends. No sign-up required.
           </CardDescription>
@@ -32,15 +32,14 @@ export default function Home() {
               <label htmlFor="currency" className="text-sm font-medium">
                 Currency
               </label>
-              <Select name="currency" defaultValue="USD">
+              <Select name="currency" defaultValue="GDP">
                 <SelectTrigger>
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="USD">$ USD</SelectItem>
-                  <SelectItem value="EUR">€ EUR</SelectItem>
                   <SelectItem value="GBP">£ GBP</SelectItem>
-                  <SelectItem value="JPY">¥ JPY</SelectItem>
+                  <SelectItem value="EUR">€ EUR</SelectItem>
+                  <SelectItem value="USD">$ USD</SelectItem>
                 </SelectContent>
               </Select>
             </div>
