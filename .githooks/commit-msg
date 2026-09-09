@@ -1,0 +1,22 @@
+#!/bin/sh
+# commit-msg hook: bump project version based on commit message and include it in the commit
+# Usage: installed by setting `git config core.hooksPath .githooks`
+
+MSG_FILE="$1"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+node "$REPO_ROOT/scripts/bump-version.js" "$MSG_FILE"
+RET=$?
+if [ $RET -ne 0 ]; then
+  echo "[bump-version] failed (exit $RET). Aborting commit."
+  exit 1
+fi
+
+# If package.json changed, add it and amend the commit so the version bump is included
+if ! git diff --quiet -- package.json; then
+  git add package.json
+  # Amend the commit to include the bumped package.json without changing the commit message
+  git commit --amend --no-edit --no-verify
+fi
+
+exit 0
