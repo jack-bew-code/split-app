@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { calculateSettlements } from "./utils";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -28,7 +29,7 @@ export default async function GroupDashboard({ params }: PageProps) {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `;
-  const members = await sql`SELECT * FROM members WHERE group_id = ${groupId} ORDER BY created_at ASC`;
+  const members = await sql`SELECT * FROM members WHERE group_id = ${groupId} ORDER BY created_at ASC` as { id: string; name: string }[];
 
   // 3. Fetch Expenses with Payer Names
   await sql`
@@ -50,6 +51,8 @@ export default async function GroupDashboard({ params }: PageProps) {
   `;
 
   const totalSpent = expenses.reduce((acc, exp) => acc + Number(exp.amount), 0);
+
+  const settlements = calculateSettlements(members, expenses);
 
   return (
     <main className="min-h-screen bg-gray-50 p-4 max-w-2xl mx-auto space-y-6">
@@ -86,6 +89,29 @@ export default async function GroupDashboard({ params }: PageProps) {
           </div>
         </CardContent>
       </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-lg">Settlement Plan</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div className="space-y-2">
+                {settlements.map((s, idx) => (
+                    <div key={idx} className="flex justify-between items-center bg-emerald-50 border border-emerald-100 p-3 rounded-md text-sm">
+                    <span>
+                        <strong className="text-emerald-900">{s.from}</strong> owes <strong className="text-emerald-900">{s.to}</strong>
+                    </span>
+                    <span className="font-bold text-emerald-700">
+                        {group.currency} {s.amount.toFixed(2)}
+                    </span>
+                    </div>
+                ))}
+                {settlements.length === 0 && (
+                    <p className="text-xs text-gray-400">Everyone is settled up or no expenses added yet.</p>
+                )}
+                </div>
+            </CardContent>
+        </Card>
 
       {/* Add Expense Form */}
       <Card>
