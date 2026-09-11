@@ -55,13 +55,13 @@ export default async function GroupDashboard({ params }: PageProps) {
   const settlements = calculateSettlements(members, expenses);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 max-w-2xl mx-auto space-y-6">
+    <main className="min-h-screen p-4 max-w-2xl mx-auto space-y-6">
       {/* Group Header */}
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl font-bold">{group.name}</CardTitle>
           <p className="text-sm text-gray-500">
-            Total Spent: <span className="font-semibold text-black">{group.currency} {totalSpent.toFixed(2)}</span>
+            Total Spent: <span className="font-semibold text-gray-400">{group.currency} {totalSpent.toFixed(2)}</span>
           </p>
         </CardHeader>
       </Card>
@@ -97,9 +97,9 @@ export default async function GroupDashboard({ params }: PageProps) {
             <CardContent>
                 <div className="space-y-2">
                 {settlements.map((s, idx) => (
-                    <div key={idx} className="flex justify-between items-center bg-emerald-50 border border-emerald-100 p-3 rounded-md text-sm">
+                    <div key={idx} className="flex justify-between items-center bg-grey-50 border border-emerald-200 p-3 rounded-md text-sm">
                     <span>
-                        <strong className="text-emerald-900">{s.from}</strong> owes <strong className="text-emerald-900">{s.to}</strong>
+                        <strong className="text-emerald-600">{s.from}</strong> owes <strong className="text-emerald-600">{s.to}</strong>
                     </span>
                     <span className="font-bold text-emerald-700">
                         {group.currency} {s.amount.toFixed(2)}
@@ -153,11 +153,15 @@ export default async function GroupDashboard({ params }: PageProps) {
         <CardContent>
           <div className="space-y-3">
             {expenses.map((exp) => (
-              <div key={exp.id} className="flex justify-between items-center border-b pb-2 text-sm">
-                <div>
-                  <p className="font-semibold">{exp.description}</p>
+              <div key={exp.id} className="flex justify-between items-start border-b pb-2 text-sm">
+                <div className="flex flex-col flex-1">
+                  <div className="flex w-full items-center">
+                    <p className="font-semibold">{exp.description}</p>
+                    <p className="font-semibold ml-auto">{exp.amount} {group.currency}</p>
+                  </div>
                   <p className="text-xs text-gray-500">Paid by {exp.payer_name}</p>
                 </div>
+
                 <span className="font-bold text-gray-900">
                   {group.currency} {Number(exp.amount).toFixed(2)}
                 </span>

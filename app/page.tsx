@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
+    <main className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center">Better Splitwise</CardTitle>

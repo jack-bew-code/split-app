@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { APP_VERSION } from "@/lib/version";
+import pkg from "../package.json";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Split Simple",
@@ -13,12 +14,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning is required by next-themes to prevent console errors
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <div className="fixed top-2 right-4 text-xs font-mono text-gray-400 z-50">
-          v{APP_VERSION}
-        </div>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <div className="fixed top-2 right-4 text-xs font-mono text-gray-500 z-50">
+            v{pkg.version}
+          </div>
+          
+          {children}
+          
+        </ThemeProvider>
       </body>
     </html>
   );
