@@ -57,3 +57,17 @@ export async function addExpense(groupId: string, formData: FormData) {
 
   revalidatePath(`/group/${groupId}`);
 }
+
+export async function removeMember(group_id: string, member_id: string){
+    if(!group_id || !member_id) return;
+
+    const sql = getDb();
+
+    //deletes the member and remove all expenses paid from this member 
+    await sql`
+        DELETE FROM members 
+        WHERE id = ${member_id} AND group_id = ${group_id}
+    `;
+
+    revalidatePath('/group/${group_id}')
+}

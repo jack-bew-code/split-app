@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
 import { neon } from '@neondatabase/serverless';
-import { addMember, addExpense } from './actions';
+import { addMember, addExpense, removeMember } from './actions';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSettlements } from "./utils";
+import { X } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -79,12 +80,24 @@ export default async function GroupDashboard({ params }: PageProps) {
 
           <div className="flex flex-wrap gap-2">
             {members.map((m) => (
-              <span key={m.id} className="bg-gray-200 text-gray-800 text-xs px-3 py-1.5 rounded-full font-medium">
-                {m.name}
-              </span>
+                <div 
+                key={m.id} 
+                className="flex items-center gap-1 bg-secondary text-secondary-foreground text-xs pl-3 pr-2 py-1.5 rounded-full font-medium"
+                >
+                <span>{m.name}</span>
+                <form action={removeMember.bind(null, groupId, m.id)}>
+                    <button 
+                    type="submit" 
+                    className="hover:text-red-400 opacity-70 hover:opacity-100 transition-opacity flex items-center justify-center p-0.5"
+                    aria-label={`Remove ${m.name}`}
+                    >
+                    <X className="h-3 w-3" />
+                    </button>
+                </form>
+                </div>
             ))}
             {members.length === 0 && (
-              <p className="text-xs text-gray-400">No members added yet.</p>
+                <p className="text-xs text-gray-400">No members added yet.</p>
             )}
           </div>
         </CardContent>
