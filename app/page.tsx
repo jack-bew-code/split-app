@@ -32,7 +32,7 @@ export default function Home() {
               <label htmlFor="currency" className="text-sm font-medium">
                 Currency
               </label>
-              <Select name="currency" defaultValue="GDP">
+              <Select name="currency" defaultValue="GBP">
                 <SelectTrigger>
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>

@@ -5,8 +5,8 @@ export interface Settlement {
   }
   
   export function calculateSettlements(
-    members: { id: string; name: string}[],
-    expenses: { amount: number | string; payer_id: string }[]
+    members: any[],
+    expenses: any[]
   ): Settlement[] {
     if (!members.length || !expenses.length) return [];
   
