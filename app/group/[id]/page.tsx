@@ -160,10 +160,6 @@ export default async function GroupDashboard({ params }: PageProps) {
                   </div>
                   <p className="text-xs text-gray-500">Paid by {exp.payer_name}</p>
                 </div>
-
-                <span className="font-bold text-gray-900">
-                  {group.currency} {Number(exp.amount).toFixed(2)}
-                </span>
               </div>
             ))}
             {expenses.length === 0 && (
