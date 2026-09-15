@@ -69,5 +69,18 @@ export async function removeMember(group_id: string, member_id: string){
         WHERE id = ${member_id} AND group_id = ${group_id}
     `;
 
-    revalidatePath('/group/${group_id}')
+    revalidatePath(`/group/${group_id}`)
+}
+
+export async function removeExpense(group_id: string, expense_id: string){
+    if(!group_id || !expense_id) return;
+
+    const sql = getDb();
+
+    await sql`
+    DELETE FROM expenses
+    WHERE id = ${expense_id} AND group_id = ${group_id}
+    `;
+
+    revalidatePath(`/group/${group_id}`)
 }

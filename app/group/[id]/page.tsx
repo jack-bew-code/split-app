@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSettlements } from "./utils";
 import { MemberPill } from '@/components/member-pill';
+import { ExpenseRow } from '@/components/expense-row';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -49,7 +50,7 @@ export default async function GroupDashboard({ params }: PageProps) {
     JOIN members m ON e.payer_id = m.id 
     WHERE e.group_id = ${groupId} 
     ORDER BY e.created_at DESC
-  `;
+  ` as { id: string; description: string; amount: string; payer_name: string }[];
 
   const totalSpent = expenses.reduce((acc, exp) => acc + Number(exp.amount), 0);
 
@@ -152,15 +153,22 @@ export default async function GroupDashboard({ params }: PageProps) {
         <CardContent>
           <div className="space-y-3">
             {expenses.map((exp) => (
-              <div key={exp.id} className="flex justify-between items-start border-b pb-2 text-sm">
-                <div className="flex flex-col flex-1">
-                  <div className="flex w-full items-center">
-                    <p className="font-semibold">{exp.description}</p>
-                    <p className="font-semibold ml-auto">{exp.amount} {group.currency}</p>
-                  </div>
-                  <p className="text-xs text-gray-500">Paid by {exp.payer_name}</p>
-                </div>
-              </div>
+            <ExpenseRow
+            key={exp.id}
+            groupId={groupId}
+            currency={group.currency}
+            expense={exp}
+            ></ExpenseRow>
+            
+            //   <div key={exp.id} className="flex justify-between items-start border-b pb-2 text-sm">
+            //     <div className="flex flex-col flex-1">
+            //       <div className="flex w-full items-center">
+            //         <p className="font-semibold">{exp.description}</p>
+            //         <p className="font-semibold ml-auto">{exp.amount} {group.currency}</p>
+            //       </div>
+            //       <p className="text-xs text-gray-500">Paid by {exp.payer_name}</p>
+            //     </div>
+            //   </div>
             ))}
             {expenses.length === 0 && (
               <p className="text-xs text-gray-400">No expenses recorded yet.</p>
