@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google';
 import pkg from "../package.json";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
   title: "Split Simple",
@@ -30,10 +31,12 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <div className="fixed top-2 right-4 text-xs font-mono text-gray-500 z-50">
-            v{pkg.version}
-          </div>
-          
+          <div className="fixed top-2 right-4 z-50 flex items-center gap-2">
+            <ThemeToggle />
+            <div className="text-xs font-mono text-gray-500">
+              v{pkg.version}
+            </div>
+          </div>    
           {children}
           
         </ThemeProvider>
