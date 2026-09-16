@@ -1,13 +1,13 @@
 import { notFound } from 'next/navigation';
 import { neon } from '@neondatabase/serverless';
-import { addMember, addExpense } from './actions';
+import { addMember } from './actions';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSettlements } from "./utils";
 import { MemberPill } from '@/components/member-pill';
 import { ExpenseRow } from '@/components/expense-row';
+import { AddExpenseForm } from '@/components/add-expense-form';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -119,29 +119,7 @@ export default async function GroupDashboard({ params }: PageProps) {
           <CardTitle className="text-lg">Add Expense</CardTitle>
         </CardHeader>
         <CardContent>
-          {members.length === 0 ? (
-            <p className="text-sm text-gray-500">Add at least one member above before adding expenses.</p>
-          ) : (
-            <form action={addExpense.bind(null, groupId)} className="space-y-3">
-              <Input name="description" placeholder="What was paid for? (e.g. Dinner)" required />
-              <div className="flex gap-2">
-                <Input name="amount" type="number" step="0.01" placeholder="Amount" required />
-                <Select name="payerId" required>
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Paid by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {members.map((m) => (
-                      <SelectItem key={m.id} value={m.id}>
-                        {m.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button type="submit" className="w-full">Save Expense</Button>
-            </form>
-          )}
+          <AddExpenseForm groupId={groupId} members={members} />
         </CardContent>
       </Card>
 
@@ -159,16 +137,6 @@ export default async function GroupDashboard({ params }: PageProps) {
             currency={group.currency}
             expense={exp}
             ></ExpenseRow>
-            
-            //   <div key={exp.id} className="flex justify-between items-start border-b pb-2 text-sm">
-            //     <div className="flex flex-col flex-1">
-            //       <div className="flex w-full items-center">
-            //         <p className="font-semibold">{exp.description}</p>
-            //         <p className="font-semibold ml-auto">{exp.amount} {group.currency}</p>
-            //       </div>
-            //       <p className="text-xs text-gray-500">Paid by {exp.payer_name}</p>
-            //     </div>
-            //   </div>
             ))}
             {expenses.length === 0 && (
               <p className="text-xs text-gray-400">No expenses recorded yet.</p>
