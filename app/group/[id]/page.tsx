@@ -8,6 +8,8 @@ import { calculateSettlements } from "./utils";
 import { MemberPill } from '@/components/member-pill';
 import { ExpenseRow } from '@/components/expense-row';
 import { AddExpenseForm } from '@/components/add-expense-form';
+import { toast } from '@/components/ui/toast';
+import { AddMemberForm } from '@/components/add-member-form';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -69,26 +71,8 @@ export default async function GroupDashboard({ params }: PageProps) {
       </Card>
 
       {/* Add Member Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Group Members ({members.length})</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <form action={addMember.bind(null, groupId)} className="flex gap-2">
-            <Input name="name" placeholder="Add member name..." required />
-            <Button type="submit">Add</Button>
-          </form>
 
-          <div className="flex flex-wrap gap-2">
-            {members.map((m) => (
-                <MemberPill key={m.id} member={m} groupId={groupId}></MemberPill>
-            ))}
-            {members.length === 0 && (
-                <p className="text-xs text-gray-400">No members added yet.</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <AddMemberForm members={members} groupId={groupId}></AddMemberForm>
 
         <Card>
             <CardHeader>

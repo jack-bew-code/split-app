@@ -4,6 +4,7 @@ import pkg from "../package.json";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Toaster } from "@/components/ui/toast";
 
 export const metadata: Metadata = {
   title: "Split Simple",
@@ -38,6 +39,7 @@ export default function RootLayout({
             </div>
           </div>    
           {children}
+          <Toaster></Toaster>
           
         </ThemeProvider>
       </body>
