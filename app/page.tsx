@@ -1,9 +1,6 @@
-import { createGroup } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { group } from "console";
 import { neon } from "@neondatabase/serverless";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
@@ -11,24 +8,26 @@ import Link from "next/link";
 import { revalidatePath } from "next/cache";
 
 export default async function HomePage() {
-
   //Reading Cookies
   const cookieStore = await cookies();
-  const savedGroupsCookie = cookieStore.get("split_groups")?.value;
-  const savedGroupIds = savedGroupsCookie ? JSON.parse(savedGroupsCookie): [];
-
-  //Fetching the groups from the database
+  const cookieConsent = cookieStore.get("cookieConsent")?.value;
   let myGroups: { id: string, name: string }[] = [];
-  const sql = neon(process.env.DATABASE_URL!);
-  
-  if (savedGroupIds.length > 0) {
-    // In Postgres, 'ANY' checks if the id matches any ID in our array
-    myGroups = await sql`
-      SELECT id, name FROM groups 
-      WHERE id = ANY(${savedGroupIds})
-      
-    ` as { id: string, name: string }[];
+
+  if (cookieConsent == "true"){
+    const savedGroupsCookie = cookieStore.get("split_groups")?.value;
+    const savedGroupIds = savedGroupsCookie ? JSON.parse(savedGroupsCookie): [];
     
+    //Fetching the groups from the database
+    let myGroups: { id: string, name: string }[] = [];
+    const sql = neon(process.env.DATABASE_URL!);
+    if (savedGroupIds.length > 0) {
+      // In Postgres, 'ANY' checks if the id matches any ID in our array
+      myGroups = await sql`
+        SELECT id, name FROM groups 
+        WHERE id = ANY(${savedGroupIds})
+        
+      ` as { id: string, name: string }[]; 
+    }
   }
 
   async function createNewGroup(formData: FormData){
