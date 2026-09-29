@@ -10,15 +10,15 @@ import { revalidatePath } from "next/cache";
 export default async function HomePage() {
   //Reading Cookies
   const cookieStore = await cookies();
-  const cookieConsent = cookieStore.get("cookieConsent")?.value;
+  const cookieConsent = cookieStore.get("cookie_consent")?.value;
   let myGroups: { id: string, name: string }[] = [];
-
-  if (cookieConsent == "true"){
+  console.log(cookieConsent);
+  if (cookieConsent === "true"){
+    console.log("Hello");
     const savedGroupsCookie = cookieStore.get("split_groups")?.value;
     const savedGroupIds = savedGroupsCookie ? JSON.parse(savedGroupsCookie): [];
     
     //Fetching the groups from the database
-    let myGroups: { id: string, name: string }[] = [];
     const sql = neon(process.env.DATABASE_URL!);
     if (savedGroupIds.length > 0) {
       // In Postgres, 'ANY' checks if the id matches any ID in our array
@@ -125,6 +125,7 @@ export default async function HomePage() {
         <p className="mb-3 leading-relaxed">
           This app doesnt use accounts. Once you create a group, 
           <strong className="font-bold"> you should bookmark the URL</strong> to access it again.
+          <br />If you have accepted cookies then you can see your recenty accessed groups. 
         </p>
         {/* <p className="opacity-90">
           If you lose your link, you will need to contact me to recover it!

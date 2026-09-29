@@ -23,11 +23,13 @@ export function CookieBanner() {
 
   const acceptCookies = () => {
     localStorage.setItem("cookie_consent", "true");
+    document.cookie = "cookie_consent=true; path=/; max-age=31536000";
     setIsVisible(false);
   };
 
   const declineCookies = () => {
     localStorage.setItem("cookie_consent", "false");
+    document.cookie = "cookie_consent=false; path=/; max-age=31536000";
     setIsVisible(false);
   };
 
