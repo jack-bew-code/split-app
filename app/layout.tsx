@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/toast";
+import { CookieBanner } from "@/components/cookie-banner";
 
 export const metadata: Metadata = {
   title: "Split Simple",
@@ -39,6 +40,7 @@ export default function RootLayout({
             </div>
           </div>    
           {children}
+          <CookieBanner></CookieBanner>
           <Toaster></Toaster>
           
         </ThemeProvider>
