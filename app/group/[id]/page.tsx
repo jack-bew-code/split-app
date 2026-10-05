@@ -11,6 +11,7 @@ import { AddExpenseForm } from '@/components/add-expense-form';
 import { toast } from '@/components/ui/toast';
 import { AddMemberForm } from '@/components/add-member-form';
 import { HomeButton } from "@/components/home-button";
+import { SettingsButton } from '@/components/settings-button';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -62,6 +63,7 @@ export default async function GroupDashboard({ params }: PageProps) {
   return (
     <main className="min-h-screen p-4 max-w-2xl mx-auto space-y-6">
       <HomeButton></HomeButton>
+      <SettingsButton></SettingsButton>
       {/* Group Header */}
       <Card>
         <CardHeader>

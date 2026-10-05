@@ -12,9 +12,7 @@ export default async function HomePage() {
   const cookieStore = await cookies();
   const cookieConsent = cookieStore.get("cookie_consent")?.value;
   let myGroups: { id: string, name: string }[] = [];
-  console.log(cookieConsent);
   if (cookieConsent === "true"){
-    console.log("Hello");
     const savedGroupsCookie = cookieStore.get("split_groups")?.value;
     const savedGroupIds = savedGroupsCookie ? JSON.parse(savedGroupsCookie): [];
     
